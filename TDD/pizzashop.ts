@@ -35,7 +35,7 @@ const sendOrder = (pizza: unknown): number => {
 
 const chargeCustomer = (orderId: unknown, amount: unknown): boolean => {
   if (orderId === undefined || orderId === null) {
-    throw new Error("Cannot charge the cutomer without a valid order ID!");
+    throw new Error("Cannot charge the customer without a valid order ID!");
   }
   const validOrderId = OrderIdSchema.parse(orderId);
   const validAmount = AmountSchema.parse(amount);

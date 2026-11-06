@@ -30,4 +30,26 @@ describe("Pizza Shop Unit Tests", () => {
   test("chargeCustomer throws for negative amount", () => {
     expect(() => chargeCustomer(123, -50)).toThrow();
   });
+
+  test("chargeCustomer returns true for valid input", () => {
+    const result = chargeCustomer(42, 100);
+
+    expect(result).toBe(true);
+  });
+
+  test("chargeCustomer throws for undefined order ID", () => {
+    expect(() => chargeCustomer(undefined, 100)).toThrow("Cannot charge the customer without a valid order ID!");
+  });
+
+  test("chargeCustomer throws for negative order ID", () => {
+    expect(() => chargeCustomer(-1, 100)).toThrow();
+  });
+
+  test("chargeCustomer throws for decimal order ID", () => {
+    expect(() => chargeCustomer(12.5, 100)).toThrow();
+  });
+
+  test("chargeCustomer throws for zero amount", () => {
+    expect(() => chargeCustomer(42, 0)).toThrow();
+  });
 });
