@@ -27,6 +27,12 @@ describe("Pizza Shop Unit Tests", () => {
     expect(result).toBe(true);
   });
 
+  test("orderPizza returns true for vegetarian pizza", () => {
+    const result = orderPizza("vegetarian");
+
+    expect(result).toBe(true);
+  });
+
   test("chargeCustomer throws for negative amount", () => {
     expect(() => chargeCustomer(123, -50)).toThrow();
   });
