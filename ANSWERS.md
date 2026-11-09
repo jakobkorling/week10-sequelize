@@ -47,3 +47,4 @@ Why does the loan date belong in the loans table, and not in books or members?
 The loan date belongs in the loans table because it describes a specific loan, not the book or the member.
 
 A book can be borrowed multiple times, and a member can borrow multiple books. Each loan needs its own date so we can keep track of when a book was borrowed and maintain the loan history.
+
