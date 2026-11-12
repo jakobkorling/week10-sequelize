@@ -7,6 +7,7 @@ import "./models/associations.js";
 import { Author } from "./models/Author.js";
 import { Member } from "./models/Member.js";
 import { Loan } from "./models/Loan.js";
+import { reportError } from "./utils/reportError.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -39,11 +40,11 @@ app.get("/books", async (req, res) => {
         ],
       });
     res.json(books);
-  } catch (error) {
-    Sentry.captureException(error);
-    console.error("Error fetching books:", error);
-    res.status(500).json({ error: "Failed to fetch books" });
-  }
+    } catch (error) {
+      reportError(error, "books");
+      console.error("Error fetching books:", error);
+      res.status(500).json({ error: "Failed to fetch books" });
+    }
 });
 
 app.get("/books/:id", async (req, res) => {
@@ -56,7 +57,7 @@ app.get("/books/:id", async (req, res) => {
 
     res.json(book);
   } catch (error) {
-    Sentry.captureException(error);
+    reportError(error, "books");
     console.error("Error fetching book:", error);
     res.status(500).json({ error: "Failed to fetch book" });
   }
@@ -95,7 +96,7 @@ app.put("/books/:id", async (req, res) => {
         details: error.errors.map((err) => err.message),
       });
     }
-    Sentry.captureException(error);
+    reportError(error, "books");
     console.error("Error updating book:", error);
     res.status(500).json({ error: "Failed to update book" });
   }
@@ -113,7 +114,7 @@ app.delete("/books/:id", async (req, res) => {
 
     res.status(204).send();
   } catch (error) {
-    Sentry.captureException(error);
+    reportError(error, "books");
     console.error("Error deleting book:", error);
     res.status(500).json({ error: "Failed to delete book" });
   }
@@ -144,7 +145,7 @@ app.post("/books", async (req, res) => {
       });
     }
 
-    Sentry.captureException(error);
+    reportError(error, "books");
     console.error("Error creating book:", error);
     res.status(500).json({ error: "Failed to create book" });
   }
@@ -165,7 +166,7 @@ async function startServer() {
       console.log(`Server running on http://localhost:${PORT}`);
     });
   } catch (error) {
-    Sentry.captureException(error);
+    reportError(error, "database");
     console.error("Unable to start server:", error);
     process.exit(1);
   }
@@ -186,7 +187,7 @@ app.post("/authors", async (req, res) => {
       });
     }
 
-    Sentry.captureException(error);
+    reportError(error, "authors");
     console.error("Error creating author:", error);
     res.status(500).json({ error: "Failed to create author" });
   }
@@ -209,7 +210,7 @@ app.get("/authors/:id/books", async (req, res) => {
 
     res.json(author);
   } catch (error) {
-    Sentry.captureException(error);
+    reportError(error, "authors");
     console.error("Error fetching author books:", error);
     res.status(500).json({ error: "Failed to fetch author books" });
   }
@@ -252,7 +253,7 @@ app.post("/loans", async (req, res) => {
 
     res.status(201).json(loan);
   } catch (error) {
-    Sentry.captureException(error);
+    reportError(error, "loans");
     console.error("Error creating loan:", error);
     res.status(500).json({ error: "Failed to create loan" });
   }
@@ -265,7 +266,7 @@ app.get("/loans", async (req, res) => {
   });
 
   Sentry.setTag("feature", "loans");
-  
+
   try {
     const loans = await Loan.findAll({
       include: [
@@ -282,7 +283,7 @@ app.get("/loans", async (req, res) => {
 
     res.json(loans);
   } catch (error) {
-    Sentry.captureException(error);
+    reportError(error, "loans");
     console.error("Error fetching loans:", error);
     res.status(500).json({ error: "Failed to fetch loans" });
   }
@@ -303,7 +304,7 @@ app.post("/members", async (req, res) => {
       });
     }
 
-    Sentry.captureException(error);
+    reportError(error, "members");
     console.error("Error creating member:", error);
     res.status(500).json({ error: "Failed to create member" });
   }
@@ -328,7 +329,7 @@ app.put("/loans/:id/return", async (req, res) => {
 
     res.json(loan);
   } catch (error) {
-    Sentry.captureException(error);
+    reportError(error, "loans");
     console.error("Error returning book:", error);
     res.status(500).json({ error: "Failed to return book" });
   }
@@ -359,7 +360,7 @@ app.get("/members/:id/loans", async (req, res) => {
 
     res.json(member);
   } catch (error) {
-    Sentry.captureException(error);
+    reportError(error, "members");
     console.error("Error fetching member loans:", error);
     res.status(500).json({
       error: "Failed to fetch member loans",

@@ -78,3 +78,9 @@ Exercise 5 - Breadcrumbs & Tags
 A breadcrumb shows what happened before an error occurred. For example, "Fetch books route" shows that the /books endpoint was called.
 
 A tag is used to categorize and filter errors. For example, `feature:books` makes it easier to find errors related to books.
+
+Exercise 6 – One helper instead of copy-paste
+
+Why is it better to use a helper function instead of repeating the same code in every catch block?
+
+A helper function reduces duplicated code and makes it easier to maintain. If we need to change how errors are reported, we only need to update one function instead of every catch block.
