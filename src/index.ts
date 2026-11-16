@@ -48,6 +48,12 @@ app.get("/books", async (req, res) => {
 });
 
 app.get("/books/:id", async (req, res) => {
+  Sentry.addBreadcrumb({
+    message: "Fetch book by ID route",
+    category: "database",
+    level: "info",
+  });
+
   try {
     const book = await Book.findByPk(req.params.id);
 
@@ -64,6 +70,12 @@ app.get("/books/:id", async (req, res) => {
 });
 
 app.put("/books/:id", async (req, res) => {
+  Sentry.addBreadcrumb({
+    message: "Update book route",
+    category: "database",
+    level: "info",
+  });
+
   try {
     const book = await Book.findByPk(req.params.id);
 
@@ -103,6 +115,11 @@ app.put("/books/:id", async (req, res) => {
 });
 
 app.delete("/books/:id", async (req, res) => {
+  Sentry.addBreadcrumb({
+    message: "Delete book route",
+    category: "database",
+    level: "info",
+  });
   try {
     const book = await Book.findByPk(req.params.id);
 
@@ -121,6 +138,12 @@ app.delete("/books/:id", async (req, res) => {
 });
 
 app.post("/books", async (req, res) => {
+  Sentry.addBreadcrumb({
+    message: "Create book route",
+    category: "database",
+    level: "info",
+  });
+
   try {
     const { title, authorId, publishedYear } = req.body;
 
@@ -173,6 +196,12 @@ async function startServer() {
 }
 
 app.post("/authors", async (req, res) => {
+  Sentry.addBreadcrumb({
+    message: "Create author route",
+    category: "database",
+    level: "info",
+  });
+
   try {
     const { name } = req.body;
 
@@ -194,6 +223,12 @@ app.post("/authors", async (req, res) => {
 });
 
 app.get("/authors/:id/books", async (req, res) => {
+  Sentry.addBreadcrumb({
+    message: "Fetch author books route",
+    category: "database",
+    level: "info",
+  });
+
   try {
     const author = await Author.findByPk(req.params.id, {
       include: [
@@ -217,6 +252,11 @@ app.get("/authors/:id/books", async (req, res) => {
 });
 
 app.post("/loans", async (req, res) => {
+  Sentry.addBreadcrumb({
+    message: "Create loan route",
+    category: "database",
+    level: "info",
+  });
   try {
     const { bookId, memberId } = req.body;
 
@@ -290,6 +330,12 @@ app.get("/loans", async (req, res) => {
 });
 
 app.post("/members", async (req, res) => {
+  Sentry.addBreadcrumb({
+    message: "Create member route",
+    category: "database",
+    level: "info",
+  });
+
   try {
     const { name, email } = req.body;
 
@@ -311,6 +357,12 @@ app.post("/members", async (req, res) => {
 });
 
 app.put("/loans/:id/return", async (req, res) => {
+  Sentry.addBreadcrumb({
+    message: "Return book route",
+    category: "database",
+    level: "info",
+  });
+
   try {
     const loan = await Loan.findByPk(req.params.id);
 
@@ -336,6 +388,11 @@ app.put("/loans/:id/return", async (req, res) => {
 });
 
 app.get("/members/:id/loans", async (req, res) => {
+  Sentry.addBreadcrumb({
+    message: "Fetch member loans route",
+    category: "database",
+    level: "info",
+  });
   try {
     const member = await Member.findByPk(req.params.id, {
       include: [
@@ -367,5 +424,7 @@ app.get("/members/:id/loans", async (req, res) => {
     });
   }
 });
+
+Sentry.setupExpressErrorHandler(app);
 
 startServer();
