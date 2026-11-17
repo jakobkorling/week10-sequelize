@@ -84,3 +84,74 @@ Exercise 6 – One helper instead of copy-paste
 Why is it better to use a helper function instead of repeating the same code in every catch block?
 
 A helper function reduces duplicated code and makes it easier to maintain. If we need to change how errors are reported, we only need to update one function instead of every catch block.
+
+
+Week 11 - SonarQube
+
+
+Exercise 2 – Your first scan
+
+Question: Did your project pass or fail the quality gate? How many issues did SonarQube find?
+
+Answer: My project passed the quality gate. SonarQube found 1 issue, which was a minor code smell in src/sequelize.ts.
+
+Exercise 3 – Read before you fix
+
+Issue 1
+
+Rule: typescript – Unnecessary type assertion
+File: src/sequelize.ts, line 7
+What's wrong: The code uses a type assertion that TypeScript doesn't need.
+Compliant code: Remove the unnecessary type assertion.
+
+Is it a problem? Yes, but it's a minor issue. Removing it makes the code cleaner and easier to read.
+
+Exercise 4 – Keep your token out of code
+
+What can someone do with your SonarQube token if it leaks?
+
+Someone could use my token to access SonarQube with my permissions, view project information and potentially modify analysis results.
+
+Why is it better to keep the project key in sonar-project.properties instead of a long command?
+
+It makes the command shorter, keeps the configuration in one place and makes it easier to run the same analysis again.
+
+Exercise 5 – Scan only your own code
+
+Question: What changed in the numbers, and why? Why is it a problem when a tool reports issues in code you didn't write?
+
+Answer: The number of lines decreased from 962 to 605 after adding exclusions. SonarQube now scans 523 lines of code and found 0 issues.
+
+This happened because SonarQube now focuses on my own source code and ignores unnecessary files.
+
+It is a problem when SonarQube reports issues in code I didn't write because it makes the results harder to understand and can distract me from problems in my own code.
+
+Exercise 6 – Fix, test, repeat
+
+Database connection
+
+My database connection already uses async/await with try/catch, so I didn't need to change it.
+
+Testing
+
+I ran npm test and all 31 tests passed.
+
+I ran npm run sonar and the analysis was successful.
+
+Issues fixed
+
+Issue 1: Unnecessary type assertion in src/sequelize.ts.
+
+Fix: Removed the unnecessary !.
+
+Result: The issue was resolved.
+
+SonarQube now reports 0 open issues, so I couldn't fix three additional issues.
+
+Why should you run tests after fixing an issue?
+
+To make sure the changes didn't break anything and that the code still works.
+
+Why should you scan the code again after fixing an issue?
+
+To check that the issue is gone and that no new problems were introduced.
