@@ -12,5 +12,19 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    container_name: my-n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - GENERIC_TIMEZONE=Europe/Stockholm
+      - TZ=Europe/Stockholm
+    volumes:
+      - n8n_data:/home/node/.n8n
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
 volumes:
   postgres_data:
+  n8n_data:

@@ -1,0 +1,170 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "862670b1-8922-47e8-8710-218a6ca05f9b",
+      "name": "When chat message received",
+      "webhookId": "dee350b6-1223-4dba-b54d-b5e5e656fddd"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "# Role\nYou are a personal fitness assistant based in Karlskrona, Sweden.\n\n# Task\nHelp the user decide whether to exercise indoors or outdoors based on current weather and air quality.\n\n# Input\nThe user will ask questions about outdoor activities, clothing and workout recommendations. Assume the user is in Karlskrona unless stated otherwise.\n\n# Tools\n- Get weather: Retrieves current weather conditions.\n- Get air quality: Retrieves current air quality in Karlskrona.\n\nAlways use both tools before making recommendations about outdoor activities.\n\n# Constraints\n- Do not invent weather or air quality data.\n- Use Celsius and metric units.\n- Only ask follow-up questions when necessary.\n- Base your recommendations on the data returned by the tools.\n- Do not present current weather conditions as a future forecast.\n- Only provide recommendations for Karlskrona, since the tools are configured for this location.\n\n- Do not make guarantees about health or safety.\n- Keep each response under 150 words.\n- Avoid repeating information unnecessarily.\n\n# Output\n- Start with a clear recommendation.\n- Include a short summary of the weather and air quality.\n- Explain why you made the recommendation.\n- Include clothing suggestions when relevant.\n- Keep your answers concise and easy to understand."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        128,
+        0
+      ],
+      "id": "3a75736c-f72d-4c16-bcd7-0102645948d6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Gets the current air quality for Karlskrona using Open-Meteo.\nUse this tool when the user asks about air quality or being active outside.",
+        "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=56.16&longitude=15.59&current=european_aqi,pm2_5,pm10&timezone=Europe/Stockholm",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.5,
+      "position": [
+        512,
+        240
+      ],
+      "id": "1384a6a0-e43d-47c9-9571-64c9ce6c1d7f",
+      "name": "Get air quality"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        128,
+        256
+      ],
+      "id": "db40988d-1f23-4fee-91ae-20a95ff39d64",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "cityName": "Stockholm, SE"
+      },
+      "type": "n8n-nodes-base.openWeatherMapTool",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        240
+      ],
+      "id": "61c06848-1322-4507-8394-f952fd31e2b7",
+      "name": "Get weather",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "ADieTqlQlFuSfbPY",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        256
+      ],
+      "id": "a42270c5-84d4-41b6-b29c-477e72e05abe",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "a2nDCKfjuwQZLoIw",
+          "name": "Groq account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get air quality": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get weather": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "3ab8d370-f8d6-4d9a-926c-be211243939f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ca883b01cf8aced1c689f225639a885cd380d2c8464504a0b7079744d2c81808"
+  },
+  "nodeGroups": [],
+  "id": "ChkbZ59m39LBsCQY",
+  "tags": []
+}

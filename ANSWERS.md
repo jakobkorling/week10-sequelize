@@ -177,3 +177,86 @@ To make sure the changes didn't break anything and that the code still works.
 Why should you scan the code again after fixing an issue?
 
 To check that the issue is gone and that no new problems were introduced.
+
+## Week 12 - AI Agents
+
+### Exercise 1 - Agent or automation?
+
+| Scenario | Type | Explanation |
+| --- | --- | --- |
+| 1 | Automation | It follows the same steps every Monday. |
+| 2 | Agent | It needs to understand the question and decide what information to look up. |
+| 3 | Automation | It follows the same steps every night, even though it uses AI. |
+| 4 | Automation | It performs a predefined action when a GitHub issue is created. |
+| 5 | Agent | It uses different sources of information to make a decision based on the situation. |
+| 6 | Automation | It follows the same steps every time a form is submitted. |
+
+**Why is scenario 3 not an agent even though it uses AI?**
+
+The AI is only used to summarise the posts. Just like the Reddit example, the workflow follows the same steps every time. The AI does not decide which steps to take or which tools to use.
+
+**Why is an automation often a better choice than an agent?**
+
+An automation is usually cheaper, faster and easier to test because it follows predefined steps. If the task does not require decision-making, there is no need to use an agent.
+
+### Exercise 2 - Brain and memory
+
+**What happened when the context window was 1, and when there was no memory? Explain what the context window length means.**
+
+When the context window was set to 1, the agent remembered my dog's name but gave me the wrong name. Without memory, the agent could not remember my name at all and treated each message as a new conversation.
+
+The context window length determines how many previous conversation exchanges the agent has access to.
+
+**Why not just set the context window to 1000?**
+
+A larger context window means that the model has to process more information with every message. This uses more tokens, can increase the cost and make the agent slower.
+
+### Exercise 3 - Your first tool
+
+**Which questions made the agent use the weather tool, and which didn't? Nobody told the agent when to use the tool. How did it decide?**
+
+The agent used the weather tool when I asked if I should bring an umbrella and if I needed a jacket. It did not need the weather tool to calculate 12 times 7. The agent understood the context of each question and decided which tools were needed based on their names and descriptions.
+
+**This is the difference between an agent and the automation from Exercise 1. Explain it using what you saw in the logs.**
+
+The logs showed that the agent used different tools depending on the question. An automation would follow the same predefined steps every time, while an agent decides which steps to take based on the situation.
+
+**What would change if OpenWeatherMap offered an MCP server instead? Name one advantage.**
+
+Other AI applications that support MCP could use the same weather tools without needing a separate integration for each application. MCP provides a standard way of connecting AI agents to tools.
+
+### Exercise 4 - Build your own tool with an HTTP request
+
+**Explain API, HTTP request and function in your own words. Use the vending machine from the video, and one example from your own Express API.**
+
+An API defines what information and actions are available to another application. An HTTP request is how we communicate with the API, and a function performs a specific action.
+
+In the vending machine example, the available choices represent the API, pressing a button represents the request, and dispensing the product represents the function.
+
+In my Express API, sending a GET request to /books retrieves a list of books from the database.
+
+**What happened to your agent's answer when you changed the tool's description to something vague, like "tool"?**
+
+The agent still used both the weather and air quality tools. I think this is because the name "Get air quality" was descriptive enough for the agent to understand what the tool does. However, a clear description makes it easier for the agent to understand when to use it.
+
+### Exercise 5 - Write a real prompt
+
+With the vague prompt "Help the user.", the agent asked several follow-up questions instead of giving recommendations. It did not know which location to use or what information was relevant.
+
+With the structured prompt, the agent understood its role, assumed the user was in Karlskrona and provided recommendations based on weather and air quality. The answers became more relevant, consistent and useful.
+
+The structured prompt also made the agent's behaviour more predictable because it had clear instructions about its role, task, tools, constraints and expected output.
+
+One thing that could still be improved is the length of the answers, since the agent sometimes provided more information than necessary.
+
+### Exercise 6 - Break it on purpose
+
+I intentionally changed the URL in the air quality tool to an invalid endpoint. This resulted in a 404 Not Found error.
+
+The agent handled the error by explaining that it could not retrieve the current air quality data instead of inventing measurements.
+
+In the execution logs, I could see which tool failed and the error message. This made it easy to identify the problem.
+
+After restoring the correct URL, I tested the same question again and the agent successfully returned the current air quality data.
+
+Execution logs are useful for debugging because they show which nodes and tools were executed, their input and output, and any errors that occurred.
