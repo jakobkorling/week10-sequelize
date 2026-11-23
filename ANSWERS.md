@@ -77,3 +77,9 @@ All 31 tests passed across four test files:
 The Pizza Shop tests were found in `pizzashop.test.ts` and `pizzashop.integration.test.ts`. The Library tests were found in `library.test.ts`.
 
 A test can pass locally but fail in CI because the environments can be different. For example, different Node.js versions, operating systems, missing environment variables or dependencies can cause failures.
+
+### Exercise 3 - Red on purpose
+
+A red cross on a pull request is better than one after merging because it warns us that something is broken before the code reaches the main branch.
+
+It allows developers to find and fix failing tests before merging, which helps keep the main branch stable.
