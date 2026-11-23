@@ -48,3 +48,32 @@ The loan date belongs in the loans table because it describes a specific loan, n
 
 A book can be borrowed multiple times, and a member can borrow multiple books. Each loan needs its own date so we can keep track of when a book was borrowed and maintain the loan history.
 
+
+
+## Week 12 - Continuous Integration with GitHub Actions
+
+### Exercise 1 - Your first workflow
+
+`on` defines which events trigger the workflow, such as a push or pull request.
+
+`runs-on` specifies which operating system the job runs on. In this case, Ubuntu.
+
+`strategy.matrix` allows the same job to run with different configurations, such as multiple Node.js versions.
+
+`steps` defines the actions and commands that run in the job, such as checking out the code, installing dependencies and running tests.
+
+Nothing happened when I pushed the branch because the workflow was configured to run on `master`. After changing the branch to `week12/ci`, GitHub Actions started automatically when I pushed.
+
+### Exercise 2 - Read the report
+
+There was one job called `test` because the workflow only defined one job and did not use a matrix.
+
+All 31 tests passed across four test files:
+- Pizza Shop unit tests: 11 tests
+- Pizza Shop integration tests: 1 test
+- Library tests: 13 tests
+- Schema tests: 6 tests
+
+The Pizza Shop tests were found in `pizzashop.test.ts` and `pizzashop.integration.test.ts`. The Library tests were found in `library.test.ts`.
+
+A test can pass locally but fail in CI because the environments can be different. For example, different Node.js versions, operating systems, missing environment variables or dependencies can cause failures.
