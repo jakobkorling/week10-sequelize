@@ -99,3 +99,28 @@ original build structure.
 After fixing the errors, both the typecheck and all 31
 tests passed locally. The GitHub Actions workflow also
 completed successfully.
+
+## Exercise 5 – Pick your Node versions
+
+I updated the CI workflow to use a matrix with Node.js
+22, 24 and 26, which are the currently supported LTS
+versions.
+
+I also added an engines field to package.json with
+Node.js 22 as the minimum version.
+
+All three CI jobs passed successfully.
+
+### Question: What's the difference between npm ci and
+npm install, and why does CI use npm ci?
+
+npm install installs dependencies and can update
+package-lock.json.
+
+npm ci installs the exact dependency versions from
+package-lock.json and removes any existing node_modules
+folder before installation.
+
+CI uses npm ci because it provides clean, consistent
+and reproducible installations without changing the
+lock file.
