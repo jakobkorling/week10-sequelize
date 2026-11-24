@@ -83,3 +83,19 @@ A test can pass locally but fail in CI because the environments can be different
 A red cross on a pull request is better than one after merging because it warns us that something is broken before the code reaches the main branch.
 
 It allows developers to find and fix failing tests before merging, which helps keep the main branch stable.
+
+## Exercise 4 – Check types in CI
+
+I added a Typecheck step to the CI workflow that runs
+`npm run typecheck` before running the tests.
+
+I intentionally added a type error by assigning a string
+to a variable of type number. TypeScript detected the error.
+
+I also created a separate `tsconfig.ci.json` to include
+both source code and test files without changing the
+original build structure.
+
+After fixing the errors, both the typecheck and all 31
+tests passed locally. The GitHub Actions workflow also
+completed successfully.
