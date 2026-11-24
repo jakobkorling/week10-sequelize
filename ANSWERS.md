@@ -124,3 +124,22 @@ folder before installation.
 CI uses npm ci because it provides clean, consistent
 and reproducible installations without changing the
 lock file.
+
+## Exercise 6 – Protect week12/ci
+
+I added a branch protection rule that requires pull
+requests and passing CI checks before merging into
+week12/ci.
+
+I created a pull request with an intentionally failing
+test and verified that GitHub blocked the merge.
+
+I also added a CI status badge to README.md.
+
+### Question: What does branch protection do that CI alone can't?
+
+CI runs automated checks but does not prevent failing
+code from being merged on its own.
+
+Branch protection prevents merging until all required
+checks have passed.
