@@ -4,7 +4,7 @@ import {
   checkOutBook,
   registerLoan,
   borrowBook,
-} from "./library";
+} from "./library.js";
 
 describe("Library Unit Tests", () => {
   test("findBook returns dune with 3 copies", () => {

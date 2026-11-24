@@ -5,7 +5,7 @@ import {
   PizzaSchema,
   AmountSchema,
   OrderIdSchema,
-} from "./pizzashop";
+} from "./pizzashop.js";
 
 describe("Pizza Shop Schema Tests", () => {
     test("PizzaTypeSchema accepts margherita", () => {
